@@ -1,0 +1,22 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+scan01:
+  size: 4
+
+scan02:
+  size: 2147483647
+
+scan03:
+  size: 0
+
+scan04:
+  size: 0
+
+scan05:
+  size: 2
+  aborted: false
+
+scan06:
+  size: 2
+  aborted: true
+  aborted_at: '2018-10-06T09:03:50.000Z'

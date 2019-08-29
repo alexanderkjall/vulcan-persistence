@@ -1,0 +1,36 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+agent01:
+  jobqueue: jobqueue01
+  status: RUNNING
+  version: v1
+  enabled: true
+  heartbeat_at: <%= Time.now.to_s %>
+
+agent02:
+  jobqueue: jobqueue02
+  status: NEW
+  version: v2
+  enabled: true
+  heartbeat_at: <%= Time.now.to_s %>
+
+agent03:
+  jobqueue: jobqueue01
+  status: RUNNING
+  version: v2
+  enabled: true
+  heartbeat_at: <%= 1.minute.ago.to_s %>
+
+agent04:
+  jobqueue: jobqueue01
+  status: PAUSED
+  version: v2
+  enabled: true
+  heartbeat_at: <%= Time.now.to_s %>
+
+agent05:
+  jobqueue: jobqueue02
+  status: RUNNING
+  version: v2
+  enabled: true
+  heartbeat_at: <%= Time.now.to_s %>

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+docker run --name postgres -p 5432:5432 -e POSTGRES_USER=vulcan -e POSTGRES_PASSWORD=vulcan --rm -d postgres
+
+sleep 5
+
+RAILS_ENV=development rake db:reset
+RAILS_ENV=test rake db:reset

@@ -1,0 +1,55 @@
+{
+    "scan": {
+        "checks": [
+            {
+                "check": {
+                    "checktype_name": "tls",
+                    "options": "",
+                    "target": ""
+                }
+            },
+            {
+                "check": {
+                    "checktype_name": "tls",
+                    "options": "",
+                    "target": "example.com"
+                }
+            },
+            {
+                "check": {
+                    "checktype_name": "tls",
+                    "options": "",
+                    "target": "www.example.com"
+                }
+            },
+            {
+                "check": {
+                    "checktype_name": "tls",
+                    "options": "",
+                    "target": "test.example.com"
+                }
+            },
+            {
+                "check": {
+                    "checktype_name": "tls",
+                    "options": "",
+                    "target": "smtp.example.com"
+                }
+            },
+            {
+                "check": {
+                    "checktype_name": "tls",
+                    "options": "",
+                    "target": "mail.example.com"
+                }
+            },
+            {
+                "check": {
+                    "checktype_name": "tls",
+                    "options": "",
+                    "target": "server.example.com"
+                }
+            }
+        ]
+    }
+}

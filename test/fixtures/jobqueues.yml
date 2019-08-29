@@ -1,0 +1,32 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+jobqueue01:
+  name: x
+  arn: x:x:x:x
+  description: MyText
+
+jobqueue02:
+  name: y
+  arn: y:y:y:y
+  description: MyText
+
+vulcanLocalQueue:
+  id: 9f102bc5-1e4f-4b4a-8604-178247e4e05c
+  name: vulcan-local-queue
+  arn: arn:aws:sqs:eu-west-1:1234567890:vulcan-local-queue
+  description: MyText
+  default: true
+
+vulcanTestQueue:
+  id: 9f102bc5-1e4f-4b4a-8604-178247e4e666
+  name: vulcan-test-queue
+  arn: arn:aws:sqs:eu-west-1:1234567890:vulcan-test-queue
+  description: MyText
+  default: false
+
+nessusQueue:
+  id: 9f102bc5-1e4f-4b4a-6666-178247e4e999
+  name: vulcan-nessus-queue
+  arn: arn:aws:sqs:eu-west-1:1234567890:vulcan-nessus-queue
+  description: Nessus queue
+  default: false

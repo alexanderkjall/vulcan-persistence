@@ -1,0 +1,103 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+check01:
+  agent: agent01
+  checktype: checktype01
+  target: server.example.com
+  status: FINISHED
+  options: {}
+  webhook: MyString
+  tag: MyTag1
+
+check02:
+  agent: agent02
+  checktype: checktype02
+  target: smtp.example.com
+  status: FAILED
+  options: {}
+  webhook: MyString
+  tag: MyTag2
+
+check03:
+  agent: agent02
+  target: www.example.com
+  checktype: checktype01
+  status: CREATED
+  options: {}
+  webhook: MyString
+  queue_name: vulcan-local-queue
+  tag: MyTag3
+
+check04:
+  agent: agent02
+  target: www.example.com
+  checktype: checktype01
+  status: RUNNING
+  options: {}
+  webhook: MyString
+  tag: MyTag4
+
+check05:
+  agent: agent01
+  target: www.example.com
+  checktype: checktype01
+  status: CREATED
+  options: {}
+  webhook: MyString
+  scan: scan01
+  queue_name: vulcan-local-queue
+  tag: MyTag5
+
+check06:
+  agent: agent01
+  target: www.example.com
+  checktype: checktype02
+  status: CREATED
+  options: {}
+  webhook: MyString
+  scan: scan01
+  queue_name: vulcan-local-queue
+  tag:
+
+check07:
+  agent: agent01
+  target: www.example.com
+  checktype: checktype01
+  status: QUEUED
+  options: {}
+  webhook: MyString
+  scan: scan06
+  queue_name: vulcan-local-queue
+  tag: MyTag5
+
+check08:
+  agent: agent01
+  target: www.example.com
+  checktype: checktype01
+  status: RUNNING
+
+check09:
+  agent: agent01
+  target: www.example.com
+  checktype: checktype01
+  status: FINISHED
+
+check10:
+  agent: agent02
+  target: www.example.com
+  checktype: checktype01
+  status: RUNNING
+  options: {}
+  webhook: MyString
+  scan: scan01
+  tag: MyTag4
+
+check11:
+  agent: agent02
+  target: www.example.com
+  checktype: checktype01
+  status: RUNNING
+  options: {}
+  webhook: MyString
+  scan: scan01
+  tag: MyTag4
