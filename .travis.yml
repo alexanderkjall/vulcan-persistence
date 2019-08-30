@@ -1,0 +1,12 @@
+language: ruby
+rvm:
+  - 2.4.5
+services:
+  - postgresql
+addons:
+  postgresql: "9.6"
+before_script:
+  - psql -c "CREATE USER vulcan WITH PASSWORD 'vulcan';" -U postgres
+  - psql -c "ALTER USER vulcan WITH SUPERUSER;" -U postgres
+script:
+  - ./script/test
