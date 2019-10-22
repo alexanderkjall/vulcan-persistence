@@ -1,8 +1,6 @@
 module Api::V1
   class ChecksController < ApplicationController
     before_action :set_check, only: [:show, :update, :destroy, :abort, :kill]
-    before_action :set_check_and_jobqueue, only: [:report, :raw]
-    before_action :load_results_service, only: [:report, :raw]
 
     # GET /checks
     def index
@@ -89,33 +87,10 @@ module Api::V1
       end
     end
 
-    # POST /checks/1/report
-    def report
-      if (@check.report = @results_service.save_report(@jobqueue.id, @check.id, params.require(:report))) && @check.save
-        render json: @check
-      else
-        render json: @check.errors, status: :unprocessable_entity
-      end
-    end
-
-    # POST /checks/1/raw
-    def raw
-      if (@check.raw = @results_service.save_raw(@jobqueue.id, @check.id, params[:check][:raw])) && @check.save
-        render json: @check
-      else
-        render json: @check.errors, status: :unprocessable_entity
-      end
-    end
-
     private
     # Use callbacks to share common setup or constraints between actions.
     def set_check
       @check = Check.find(params[:id])
-    end
-
-    def set_check_and_jobqueue
-      set_check
-      @jobqueue = Agent.find(@check.agent_id).jobqueue
     end
 
     # Only allow a trusted parameter "white list" through.
@@ -123,10 +98,6 @@ module Api::V1
       # NOTE: the :check definition should be in sync with its definition in the
       # ScansController and the scan processor in lib/scan_processor.rb.
       params.require(:check).permit(:target, :status, :options, :webhook, :agent_id, :checktype_id, :checktype_name, :progress, :raw, :report, :scan_id, :jobqueue_id, :jobqueue_name, :tag)
-    end
-
-    def load_results_service(service = ResultsService.new(Rails.application.config.region, Rails.application.config.bucket, Rails.application.config.api_url))
-      @results_service ||= service
     end
 
     # Notifies action to stream

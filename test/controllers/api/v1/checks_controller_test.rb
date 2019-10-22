@@ -252,34 +252,6 @@ module Api::V1
       assert_response :ok
     end
 
-    test "should save report" do
-      stub_request(:any, //).to_return(status: 204)
-
-      post report_v1_check_url(@check01), params: { report: "UkVQT1JU" }, as: :json
-      assert_response :ok
-    end
-
-    test "should save raw" do
-      stub_request(:any, //).to_return(status: 204)
-
-      post raw_v1_check_url(@check01), params: { raw: "UkFX" }, as: :json
-      assert_response :ok
-    end
-
-    test "should save empty raw" do
-      stub_request(:any, //).to_return(status: 204)
-
-      post raw_v1_check_url(@check01), params: { raw: "" }, as: :json
-      assert_response :ok
-    end
-
-    test "should fail to save raw because missing param" do
-      stub_request(:any, //).to_return(status: 204)
-
-      post raw_v1_check_url(@check01), params: { }, as: :json
-      assert_response :unprocessable_entity
-    end
-
     test "should update check to timeout" do
       patch v1_check_url(@check08), params: { check: { status: "TIMEOUT" } }, as: :json
       assert_response :ok
