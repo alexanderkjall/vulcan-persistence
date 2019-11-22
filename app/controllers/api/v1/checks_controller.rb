@@ -97,7 +97,7 @@ module Api::V1
     def check_params
       # NOTE: the :check definition should be in sync with its definition in the
       # ScansController and the scan processor in lib/scan_processor.rb.
-      params.require(:check).permit(:target, :status, :options, :webhook, :agent_id, :checktype_id, :checktype_name, :progress, :raw, :report, :scan_id, :jobqueue_id, :jobqueue_name, :tag)
+      params.require(:check).permit(:target, :status, :options, :webhook, :agent_id, :checktype_id, :checktype_name, :progress, :raw, :report, :scan_id, :jobqueue_id, :jobqueue_name, :tag, :required_vars => [])
     end
 
     # Notifies action to stream

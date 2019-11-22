@@ -87,7 +87,7 @@ module Api::V1
     # Only allow a trusted parameter "white list" through.
     def scan_params
       # NOTE: the :check definition should be in sync with its definition in the ChecksController.
-      params.permit(:scan => [ :checks => [ :check => [ :checktype_id, :checktype_name, :target, :options, :webhook, :jobqueue_id, :jobqueue_name, :tag ] ] ])
+      params.permit(:scan => [ :checks => [ :check => [ :checktype_id, :checktype_name, :target, :options, :webhook, :jobqueue_id, :jobqueue_name, :tag, :required_vars => [] ] ] ])
     end
 
     # Notifies action to stream

@@ -8,7 +8,7 @@ module Api::V1
         @checktype = Checktype.where(name: params[:name], enabled: true, deleted_at: nil).order('created_at DESC').first
         render json: @checktype
       else
-        @checktypes = Checktype.where(deleted_at: nil).filter(params.slice(:checktype, :image, :assets, :enabled))
+        @checktypes = Checktype.where(deleted_at: nil).filter(params.slice(:checktype, :required_vars, :image, :assets, :enabled))
         render json: @checktypes
       end
     end
@@ -55,7 +55,7 @@ module Api::V1
 
     # Only allow a trusted parameter "white list" through.
     def checktype_params
-      params.require(:checktype).permit(:name, :description, :timeout, :enabled, :options, :image, :queue_name, :assets => [])
+      params.require(:checktype).permit(:name, :description, :timeout, :enabled, :options, :image, :queue_name, :assets => [], :required_vars => [])
     end
   end
 end

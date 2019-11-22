@@ -18,6 +18,7 @@ class SQSService
       "image" => check.checktype.image,
       "timeout" => check.checktype.timeout,
       "options" => check.options,
+      "required_vars" => check.required_vars,
       "scan_id" => check.scan_id,
       "start_time" => start_time
     }

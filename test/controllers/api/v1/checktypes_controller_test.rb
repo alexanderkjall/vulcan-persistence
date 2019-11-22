@@ -43,10 +43,11 @@ module Api::V1
       check = {
         checktype: {
         description: 'Checktyp description text',
+        required_vars: ['ENV_VAR'],
         image: 'dockerimage1',
         name: 'newchecktype',
         timeout: 10,
-        assets:['Domain']
+        assets: ['Domain']
       }
     }
       post v1_checktypes_url, params: check, as: :json

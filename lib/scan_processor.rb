@@ -37,7 +37,7 @@ class ScanProcessor
   def process_checks_array(event, event_data = nil)
     if event == :skey && event_data == 'check'
       @state.processor = method(:process_check)
-      @state.check = { checktype_id: '', checktype_name: '', target: '', options: '', webhook: '', tag:nil, jobqueue_id:nil, jobqueue_name:nil }.with_indifferent_access
+      @state.check = { checktype_id: '', checktype_name: '', target: '', options: '', webhook: '', tag:nil, jobqueue_id:nil, jobqueue_name:nil, required_vars: []}.with_indifferent_access
     end
   end
 

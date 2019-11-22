@@ -71,6 +71,8 @@ class ChecksHelper
 
     check.options = hash_checktype_options.deep_merge(hash_param_options).to_json
 
+    check.required_vars = checktype.required_vars
+
     unless scan_id.nil?
       check.scan_id = scan_id
     end

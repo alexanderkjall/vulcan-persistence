@@ -5,7 +5,7 @@ class ChecksCreateEnqueueJob < ApplicationJob
     checks_params = params[:scan][:checks]
     Rails.logger.info "creating checks for scan_id #{scan_id}"
     checks_params.each do |check_params|
-      whitelisted_check_params = check_params[:check].slice(:checktype_id, :checktype_name, :target, :options, :webhook, :jobqueue_id, :jobqueue_name, :tag)
+      whitelisted_check_params = check_params[:check].slice(:checktype_id, :checktype_name, :target, :options, :webhook, :jobqueue_id, :jobqueue_name, :tag, :required_vars => [])
       whitelisted_check_params.permit!
       check = ChecksHelper.create_check(whitelisted_check_params.to_h, scan_id)
       if check.nil?

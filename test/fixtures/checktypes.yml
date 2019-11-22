@@ -15,6 +15,7 @@ checktype02:
   options: "{\"timeout\":60}"
   enabled: true
   image: dockerimage2
+  required_vars: ["TLS_REQUIRED_VAR"]
 
 checktype03:
   name: tls
@@ -22,6 +23,7 @@ checktype03:
   timeout: 30
   enabled: true
   image: dockerimage3
+  required_vars: ["TLS_REQUIRED_VAR"]
   created_at: <%= 1.minute.from_now.to_s %>
 
 checktype04:
@@ -30,5 +32,6 @@ checktype04:
   timeout: 300
   enabled: true
   image: dockerimage4
+  required_vars: ["TLS_REQUIRED_VAR"]
   queue_name: vulcan-nessus-queue
   created_at: <%= 1.minute.from_now.to_s %>
