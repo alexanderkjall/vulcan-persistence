@@ -25,3 +25,28 @@ $ RAILS_ENV=test rake db:migrate
 ```
 $ RAILS_ENV=test rake test
 ```
+
+## Docker execute
+
+Those are the variables you have to use:
+
+|Variable|Description|Sample|
+|---|---|---|
+|POSTGRES_(HOST\|PORT\|USER\|PASSWORD\|DB)|Database access|
+|SECRET_KEY_BASE|Security key||
+|STREAM_CHANNEL|Postgres channel|events|
+|REGION|asw region|eu-west-1|
+|SCANS_BUCKET|S3 bucket for scans|my-vulcan-scan-bucket|
+|SNS_TOPIC_ARN|Sns topic arn|arn:aws:sns:eu-west-1:xxx:yyy|
+
+```bash
+docker build . -t vp
+
+# Use the default config.toml customized with env variables.
+docker run --env-file ./local.env vp
+
+# Use custom config file.
+docker run -v `pwd`/custom.env:/app/.env.config vr
+
+# Optional: If you want to execute sql commands into the database after the migrations.
+docker run --env-file ./local.env -v `pwd`/load.db:/tmp/load.db vp ./run.sh /tmp/load.db
