@@ -33,6 +33,8 @@ Those are the variables you have to use:
 |Variable|Description|Sample|
 |---|---|---|
 |POSTGRES_(HOST\|PORT\|USER\|PASSWORD\|DB)|Database access|
+|POSTGRES_SSLMODE|One of these (disable,allow,prefer,require,verify-ca,verify-full)|prefer|
+|POSTGRES_CA_B64|A base64 encoded ca certificate||
 |SECRET_KEY_BASE|Security key||
 |STREAM_CHANNEL|Postgres channel|events|
 |REGION|asw region|eu-west-1|
@@ -49,4 +51,4 @@ docker run --env-file ./local.env vp
 docker run -v `pwd`/custom.env:/app/.env.config vr
 
 # Optional: If you want to execute sql commands into the database after the migrations.
-docker run --env-file ./local.env -v `pwd`/load.db:/tmp/load.db vp ./run.sh /tmp/load.db
+docker run --env-file ./local.env -v `pwd`/load.db:/tmp/load.db vp /tmp/load.db
