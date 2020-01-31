@@ -10,3 +10,5 @@ before_script:
   - psql -c "ALTER USER vulcan WITH SUPERUSER;" -U postgres
 script:
   - ./script/test
+after_success:
+  - bash -c 'source <(curl -s https://raw.githubusercontent.com/adevinta/vulcan-cicd/master/docker.sh)'

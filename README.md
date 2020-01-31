@@ -52,3 +52,4 @@ docker run -v `pwd`/custom.env:/app/.env.config vr
 
 # Optional: If you want to execute sql commands into the database after the migrations.
 docker run --env-file ./local.env -v `pwd`/load.db:/tmp/load.db vp /tmp/load.db
+```
