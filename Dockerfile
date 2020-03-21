@@ -1,5 +1,5 @@
 ARG rails_env=production
-FROM ruby:2.4.9-alpine AS pre-builder
+FROM ruby:2.5.7-alpine AS pre-builder
 ARG build_without=""
 ENV SECRET_KEY_BASE=dumb
 RUN apk add --update --no-cache \
@@ -19,7 +19,7 @@ RUN bundle install -j4 --retry 3 \
     && find /gems/ -name "*.c" -delete \
     && find /gems/ -name "*.o" -delete
 
-FROM ruby:2.4.9-alpine
+FROM ruby:2.5.7-alpine
 ARG rails_env=production
 RUN apk add --update --no-cache \
         openssl \
