@@ -45,13 +45,15 @@ module Api::V1
 
     test "should create scan with checks associated to a specific queue" do
       scan = nil
+      request_params={ scan: { checks: [{ check: { checktype_name: "tls", target: "localhost", jobqueue_id: '9f102bc5-1e4f-4b4a-8604-178247e4e666' }}, { check: { checktype_name: "tls", target: "www.example.com", jobqueue_id: '9f102bc5-1e4f-4b4a-8604-178247e4e666' }}] } }
       assert_difference('Scan.count') do
-        post v1_scans_url, params: { scan: { checks: [{ check: { checktype_name: "tls", target: "localhost", jobqueue_id: '9f102bc5-1e4f-4b4a-8604-178247e4e666' }}, { check: { checktype_name: "tls", target: "www.example.com", jobqueue_id: '9f102bc5-1e4f-4b4a-8604-178247e4e666' }}] } }, as: :json
+        post v1_scans_url, params: request_params, as: :json
         scan = JSON.parse(response.body)
       end
-
       assert_response 201
       assert_equal(scan['scan']['size'], 0)
+
+      ChecksCreateEnqueueJob.perform_now(scan['scan']['id'],scan['scan']['created_at'],request_params.to_json,true)
 
       get checks_v1_scan_url(scan['scan']['id']), as: :json
       scan_checks = JSON.parse(response.body)
