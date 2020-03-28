@@ -25,7 +25,7 @@ check03:
   status: CREATED
   options: {}
   webhook: MyString
-  queue_name: http://localhost/dummy
+  queue_name: http://eu-west-1.localhost:4100/012345678900/VulcanK8SChecksGeneric
   tag: MyTag3
 
 check04:
@@ -45,7 +45,7 @@ check05:
   options: {}
   webhook: MyString
   scan: scan01
-  queue_name: http://localhost/dummy
+  queue_name: http://eu-west-1.localhost:4100/012345678900/VulcanK8SChecksGeneric
   tag: MyTag5
 
 check06:
@@ -56,7 +56,7 @@ check06:
   options: {}
   webhook: MyString
   scan: scan01
-  queue_name: http://localhost/dummy
+  queue_name: http://eu-west-1.localhost:4100/012345678900/VulcanK8SChecksGeneric
   tag:
 
 check07:

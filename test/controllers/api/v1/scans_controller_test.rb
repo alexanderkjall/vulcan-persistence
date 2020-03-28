@@ -59,8 +59,8 @@ module Api::V1
       check0 = JSON.parse(response.body)
       get v1_check_url(scan_checks['checks'][1]['id'])
       check1 = JSON.parse(response.body)
-      assert_equal(check0['check']['queue_name'], 'vulcan-test-queue')
-      assert_equal(check1['check']['queue_name'], 'vulcan-test-queue')
+      assert_equal(check0['check']['queue_name'], 'http://eu-west-1.localhost:4100/012345678900/VulcanK8SChecksTenable')
+      assert_equal(check1['check']['queue_name'], 'http://eu-west-1.localhost:4100/012345678900/VulcanK8SChecksTenable')
     end
 
     test "should show scan" do

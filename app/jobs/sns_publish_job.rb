@@ -1,7 +1,16 @@
 class SNSPublishJob < ApplicationJob
   queue_as :default
 
-  @@sns_service = SNSService.new(Aws::SNS::Client.new(region: Rails.application.config.region))
+  if Rails.application.config.sns_topic_endpoint == ""
+    client = Aws::SNS::Client.new(region: Rails.application.config.region)
+  else
+    client = Aws::SNS::Client.new(
+      region: Rails.application.config.region,
+      endpoint: Rails.application.config.sns_topic_endpoint,
+    )
+  end
+
+  @@sns_service = SNSService.new(client)
 
   def self.set_sns(sns_client)
     @@sns_service = SNService.new(sns_client)

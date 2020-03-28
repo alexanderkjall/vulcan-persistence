@@ -10,17 +10,17 @@ jobqueue02:
   arn: y:y:y:y
   description: MyText
 
-vulcanLocalQueue:
+vulcanGenericQueue:
   id: 9f102bc5-1e4f-4b4a-8604-178247e4e05c
-  name: vulcan-local-queue
-  arn: arn:aws:sqs:eu-west-1:1234567890:vulcan-local-queue
+  name: http://eu-west-1.localhost:4100/012345678900/VulcanK8SChecksGeneric
+  arn: arn:aws:sqs:eu-west-1:012345678900:VulcanK8SChecksGeneric
   description: MyText
   default: true
 
-vulcanTestQueue:
+vulcanTenableQueue:
   id: 9f102bc5-1e4f-4b4a-8604-178247e4e666
-  name: vulcan-test-queue
-  arn: arn:aws:sqs:eu-west-1:1234567890:vulcan-test-queue
+  name: http://eu-west-1.localhost:4100/012345678900/VulcanK8SChecksTenable
+  arn: arn:aws:sqs:eu-west-1:012345678900:VulcanK8SChecksTenable
   description: MyText
   default: false
 

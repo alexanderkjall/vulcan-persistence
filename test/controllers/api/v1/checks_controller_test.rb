@@ -119,7 +119,7 @@ module Api::V1
         }, as: :json
       end
       post_response = JSON.parse(response.body)
-      assert_equal('vulcan-test-queue', post_response['check']['queue_name'])
+      assert_equal('http://eu-west-1.localhost:4100/012345678900/VulcanK8SChecksTenable', post_response['check']['queue_name'])
       assert_response :created
     end
 
@@ -133,12 +133,12 @@ module Api::V1
             agent_id: @agent01.id,
             checktype_id: @checktype02.id,
             scan_id: @scan01.id,
-            jobqueue_name: 'vulcan-test-queue'
+            jobqueue_name: 'http://eu-west-1.localhost:4100/012345678900/VulcanK8SChecksGeneric'
           }
         }, as: :json
       end
       post_response = JSON.parse(response.body)
-      assert_equal('vulcan-test-queue', post_response['check']['queue_name'])
+      assert_equal('http://eu-west-1.localhost:4100/012345678900/VulcanK8SChecksGeneric', post_response['check']['queue_name'])
       assert_response :created
     end
 
