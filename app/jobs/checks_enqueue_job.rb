@@ -1,7 +1,7 @@
 class ChecksEnqueueJob < ApplicationJob
   queue_as :default
 
-  @@sqs_service = SQSService.new(Aws::SQS::Client.new(region: Rails.application.config.region))
+  @@sqs_service = SQSService.new(Rails.application.config.sqs_client)
 
   def self.set_sqs(sqs_client)
     @@sqs_service = SQSService.new(sqs_client)

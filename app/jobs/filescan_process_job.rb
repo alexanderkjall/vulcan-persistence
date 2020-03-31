@@ -1,10 +1,9 @@
 class FilescanProcessJob < ApplicationJob
   queue_as :default
-  @@s3_client = Aws::S3::Client.new(region: Rails.application.config.region)
-  @@s3_bucket =  Aws::S3::Resource.new(client: @@s3_client).bucket(Rails.application.config.scans_bucket)
+  @@s3_bucket =  Aws::S3::Resource.new(client: Rails.application.config.s3_client).bucket(Rails.application.config.scans_bucket)
   @@s3_service = S3Service.new(@@s3_bucket)
   @@chunk_size = Rails.application.config.scan_processor_buffer.to_i*1024
-  
+
   def perform(scan, scan_start_time,queue_now = false)
     @scan_id = scan
     @queue_now = queue_now
@@ -28,7 +27,7 @@ class FilescanProcessJob < ApplicationJob
     else
       if @queue_now
         ChecksEnqueueJob.perform_now([created_check], @scan_start_time)
-      else 
+      else
         ChecksEnqueueJob.perform_later([created_check], @scan_start_time)
       end
      end
