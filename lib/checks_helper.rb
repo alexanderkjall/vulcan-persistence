@@ -1,4 +1,19 @@
 class ChecksHelper
+  def self.check_message(check, start_time = DateTime.now)
+    check_message = {
+      "check_id" => check.id,
+      "target" => check.target,
+      "image" => check.checktype.image,
+      "timeout" => check.checktype.timeout,
+      "options" => check.options,
+      "required_vars" => check.required_vars,
+      "scan_id" => check.scan_id,
+      "start_time" => start_time,
+    }
+
+    check_message.to_json
+  end
+
   def self.create_check(params, scan_id = nil)
     if params[:checktype_name].present?
       if params[:checktype_id].present?
