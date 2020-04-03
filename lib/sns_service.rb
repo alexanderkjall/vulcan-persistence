@@ -7,6 +7,31 @@ class SNSService
     @sns = sns
   end
 
+  def publish_check(check, start_time, sns_topic_arn = Rails.application.config.sns_topic_arn)
+    tag = check.tag || "UNKNOWN"
+    checktype = check.checktype.name || "UNKNOWN"
+    queue_filter = checktype.start_with?("vulcan-nessus") ? "TENABLE" : "GENERIC"
+    resp = @sns.publish({
+        :topic_arn => sns_topic_arn,
+        :message => ChecksHelper.check_message(check, start_time),
+        :subject => "agent_check_message",
+        :message_attributes => {
+          "queue" => {
+            :data_type    => "String",
+            :string_value => queue_filter,
+          },
+          "team" => {
+            :data_type    => "String",
+            :string_value => tag,
+          },
+          "checktype" => {
+            :data_type    => "String",
+            :string_value => checktype,
+          },
+        }
+      })
+  end
+
   def publish_message(object, sns_topic_arn = Rails.application.config.sns_topic_arn)
     object_type = object.class.name.demodulize
     message = object.to_json

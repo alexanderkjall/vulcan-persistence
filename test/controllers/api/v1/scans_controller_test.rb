@@ -61,6 +61,29 @@ module Api::V1
       assert_equal(check1['check']['queue_name'], 'vulcan-test-queue')
     end
 
+    test "should create scan with checks enqueued throguh sns" do
+      Rails.application.config.check_queue_sns = true
+      scan = nil
+      assert_difference('Scan.count') do
+        post v1_scans_url, params: { scan: { checks: [{ check: { checktype_name: "tls", target: "localhost", jobqueue_id: '9f102bc5-1e4f-4b4a-8604-178247e4e666' }}, { check: { checktype_name: "tls", target: "www.example.com", jobqueue_id: '9f102bc5-1e4f-4b4a-8604-178247e4e666' }}] } }, as: :json
+        scan = JSON.parse(response.body)
+      end
+
+      assert_response 201
+      assert_equal(scan['scan']['size'], 0)
+
+      get checks_v1_scan_url(scan['scan']['id']), as: :json
+      scan_checks = JSON.parse(response.body)
+      get v1_check_url(scan_checks['checks'][0]['id'])
+      check0 = JSON.parse(response.body)
+      get v1_check_url(scan_checks['checks'][1]['id'])
+      check1 = JSON.parse(response.body)
+      assert_equal('CHECK_QUEUE_SNS', check0['check']['queue_name'])
+      assert_equal('CHECK_QUEUE_SNS', check1['check']['queue_name'])
+
+      Rails.application.config.check_queue_sns = false
+    end
+
     test "should show scan" do
       get v1_scan_url(@scan01), as: :json
       assert_response :success

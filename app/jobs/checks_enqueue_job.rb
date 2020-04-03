@@ -2,6 +2,7 @@ class ChecksEnqueueJob < ApplicationJob
   queue_as :default
 
   @@sqs_service = SQSService.new(Rails.application.config.sqs_client)
+  @@sns_service = SNSService.new(Rails.application.config.sns_client)
 
   def self.set_sqs(sqs_client)
     @@sqs_service = SQSService.new(sqs_client)
@@ -16,7 +17,11 @@ class ChecksEnqueueJob < ApplicationJob
           Rails.logger.info "Scan #{check.scan_id} has been aborted. Check #{check.id} aborted."
           return
         end
-        @@sqs_service.enqueue(check, start_time)
+        if Rails.application.config.check_queue_sns
+          @@sns_service.publish_check(check, start_time)
+        else
+          @@sqs_service.enqueue(check, start_time)
+        end
         check.status = "QUEUED"
         check.save
       rescue => e

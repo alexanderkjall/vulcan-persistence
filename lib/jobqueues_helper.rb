@@ -1,5 +1,8 @@
 class JobQueuesHelper
   def self.get_queue_name(jobqueue_id = nil, jobqueue_name = nil, checktype = nil)
+    if Rails.application.config.check_queue_sns
+      return "CHECK_QUEUE_SNS"
+    end
     nessus_check_queue = Rails.application.config.nessus_check_queue
     # returning queue_name by jobqueue_name specified in check
     unless jobqueue_name.nil?

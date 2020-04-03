@@ -140,6 +140,29 @@ module Api::V1
       assert_response :created
     end
 
+    test "should create check enqueued via sns overriding provided queue by name" do
+      Rails.application.config.check_queue_sns = true
+
+      assert_difference('Check.count') do
+        post v1_checks_url, params: {
+          check: {
+            target: 'www.example.com',
+            options: '',
+            webhook: 'http://localhost/1',
+            agent_id: @agent01.id,
+            checktype_id: @checktype02.id,
+            scan_id: @scan01.id,
+            jobqueue_name: 'vulcan-test-queue'
+          }
+        }, as: :json
+      end
+      post_response = JSON.parse(response.body)
+      assert_equal('CHECK_QUEUE_SNS', post_response['check']['queue_name'])
+      assert_response :created
+
+      Rails.application.config.check_queue_sns = false
+    end
+
     test "should create check assigned to queue specified by checktype" do
       assert_difference('Check.count') do
         post v1_checks_url, params: {
