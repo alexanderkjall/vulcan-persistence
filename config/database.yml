@@ -2,7 +2,7 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch('RAILS_MAX_THREADS') || 6 %>
-  timeout: 5000
+  timeout: <%= ENV['RAILS_DB_TIMEOUT'] || 10000 %>
   host: <%= ENV.fetch('POSTGRES_HOST') %>
   port: <%= ENV.fetch('POSTGRES_PORT') %>
   username: <%= ENV.fetch('POSTGRES_USER') %>

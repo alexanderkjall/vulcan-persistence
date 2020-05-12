@@ -3,8 +3,6 @@ require 'test_helper'
 module Api::V1
   class ChecksControllerTest < ActionDispatch::IntegrationTest
     setup do
-      stub_sns
-      stub_sqs
       @check01 = checks(:check01)
       @check04 = checks(:check04)
       @agent01 = agents(:agent02)

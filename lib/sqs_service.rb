@@ -8,10 +8,11 @@ class SQSService
   end
 
   def enqueue(check, start_time)
+    Rails.logger.debug "SQSService: Start enqueuing message"
     resp = @sqs.get_queue_url({
       queue_name: check.queue_name,
     })
-
+    Rails.logger.debug "SQSService: Target queue #{resp.queue_url}"
     check_message = {
       "check_id" => check.id,
       "target" => check.target,
@@ -27,5 +28,6 @@ class SQSService
       queue_url: resp.queue_url,
       message_body: check_message.to_json,
     })
+    Rails.logger.debug "SQSService: Message #{check.id} enqueued successfully"
   end
 end

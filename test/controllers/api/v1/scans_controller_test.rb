@@ -6,8 +6,6 @@ module Api::V1
 # That's the reason this test starts with Z.
   class Z_ScansControllerTest < ActionDispatch::IntegrationTest
     setup do
-      stub_sns
-      stub_sqs
       @scan01 = scans(:scan01)
       @scan05 = scans(:scan05)
       @scan06 = scans(:scan06)

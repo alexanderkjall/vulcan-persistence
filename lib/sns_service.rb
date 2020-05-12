@@ -8,6 +8,8 @@ class SNSService
   end
 
   def publish_message(object, sns_topic_arn = Rails.application.config.sns_topic_arn)
+    Rails.logger.debug "SNSService: Start publishing message"
+    Rails.logger.debug "SNSService: Target topic #{sns_topic_arn}"
     object_type = object.class.name.demodulize
     message = object.to_json
     if object_type == "Check"
@@ -18,24 +20,28 @@ class SNSService
         message = object.to_json(methods: :checktype_name)
       end
     end
+
+    status = object.status.to_s || "UNKNOWN"
+    checktype_name = object.checktype_name.to_s || "UNKNOWN"
     # Right now we are only publishing to SNS Check changes.
     # If we plan to publish different object than Checks we should
     # should create a switch case and provide custom message_attributes
     # depending on the message (object) that we are publishing.
     resp = @sns.publish({
-        :target_arn => sns_topic_arn,
+        :topic_arn => sns_topic_arn,
         :message => message,
         :subject => object_type,
         :message_attributes => {
           "status" => {
             :data_type    => "String",
-            :string_value => object.status.to_s
+            :string_value => status,
           },
           "checktype_name" => {
             :data_type    => "String",
-            :string_value => object.checktype_name.to_s
+            :string_value => checktype_name,
           },
         }
       })
+    Rails.logger.debug "SNSService: Message #{object_type} published successfully"
   end
 end

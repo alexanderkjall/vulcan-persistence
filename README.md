@@ -37,14 +37,25 @@ Those are the variables you have to use:
 |POSTGRES_CA_B64|A base64 encoded ca certificate||
 |SECRET_KEY_BASE|Security key||
 |STREAM_CHANNEL|Postgres channel|events|
-|REGION|asw region|eu-west-1|
+|REGION|AWS region|eu-west-1|
 |SCANS_BUCKET|S3 bucket for scans|my-vulcan-scan-bucket|
 |SNS_TOPIC_ARN|Sns topic arn|arn:aws:sns:eu-west-1:xxx:yyy|
+
+You can specify custom AWS endpoints for testing/developing purposes for each one of the
+ AWS services used in Vulcan Persistence, for example, by using [Minio](https://min.io/) or [LocalStack](https://localstack.cloud/).  
+
+You just need to provide the following env vars:
+
+|Variable|Description|Sample|
+|---|---|---|
+|AWS_SQS_ENDPOINT|Custom AWS SQS endpoint|http://localhost:4100 |
+|AWS_SNS_ENDPOINT|custom AWS SNS endpoint|http://localhost:4100 |
+|AWS_S3_ENDPOINT|custom AWS S3 endpoint|http://localhost:9000 |
 
 ```bash
 docker build . -t vp
 
-# Use the default config.toml customized with env variables.
+# Use the default local.env customized with env variables.
 docker run --env-file ./local.env vp
 
 # Use custom config file.
