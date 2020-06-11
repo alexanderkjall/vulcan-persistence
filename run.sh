@@ -15,4 +15,4 @@ then
   PGPASSWORD=$POSTGRES_PASSWORD PGSSLMODE=$POSTGRES_SSLMODE psql -h $POSTGRES_HOST -U $POSTGRES_USER -d $POSTGRES_DB -1 -f $1
 fi
 
-bundle exec puma -C config/puma.rb
+bundle exec puma -C config/puma.rb --control-url tcp://127.0.0.1:9293 --control-token token
