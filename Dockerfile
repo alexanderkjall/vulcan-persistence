@@ -28,6 +28,7 @@ RUN apk add --update --no-cache \
         sqlite-dev \
         postgresql-client \
         gettext \
+        bash \
         ca-certificates
 
 ARG BUILD_RFC3339="1970-01-01T00:00:00Z"
