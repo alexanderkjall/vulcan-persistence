@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191104094812) do
+ActiveRecord::Schema.define(version: 20200603163948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,8 @@ ActiveRecord::Schema.define(version: 20191104094812) do
     t.datetime "updated_at",                 null: false
     t.boolean  "aborted",    default: false, null: false
     t.datetime "aborted_at"
+    t.string   "tag"
+    t.string   "program"
   end
 
   add_foreign_key "agents", "jobqueues"

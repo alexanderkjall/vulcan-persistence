@@ -31,14 +31,14 @@ module Api::V1
     end
 
     test "should create scan with checks" do
-      scan = nil
       assert_difference('Scan.count') do
-        post v1_scans_url, params: { scan: { checks: [{ check: { checktype_name: "tls", target: "localhost" }}, { check: { checktype_name: "tls", target: "www.example.com" }}] } }, as: :json
-        scan = JSON.parse(response.body)
+        post v1_scans_url, params: { scan: { tag: "test-tag", program_id: "test-program", checks: [{ check: { checktype_name: "tls", target: "localhost" }}, { check: { checktype_name: "tls", target: "www.example.com" }}] } }, as: :json
       end
-
+      scan = JSON.parse(response.body)
       assert_response 201
       assert_equal(scan['scan']['size'], 0)
+      assert_equal('test-tag', scan['scan']['tag'])
+      assert_equal('test-program', scan['scan']['program'])
     end
 
     test "should create scan with checks associated to a specific queue" do

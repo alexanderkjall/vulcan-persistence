@@ -7,6 +7,10 @@ class Check < ApplicationRecord
 
   after_commit :sns_publish
   before_update :verify_state_machine
+  # In case the transaction is rolled back, we might had push an incorrect metric.
+  # Proper hook to push the metric would be after_commit, but then is harder to
+  # detect if status has changed. This is the best compromise in effort and consistency.
+  after_save :push_check_metrics, if: -> { Rails.application.config.metrics && (status_changed? || new_record?) }
 
   belongs_to :agent
   belongs_to :checktype
@@ -83,6 +87,43 @@ class Check < ApplicationRecord
   end
 
   private
+  def push_check_metrics
+    scan_label = "unknown-program"
+    team_label = "unknown-team"
+    checktype_label = "unknown-checktype"
+    check_status = "unknown-checkstatus"
+    scan = Scan.find_by(id: self[:scan_id])
+    if scan.nil? || scan.program.blank?
+      Rails.logger.warn "error obtaining program name for check [#{self.id}] for pushing metrics"
+    else
+      scan_label = scan.program.downcase
+    end
+    if self[:tag].blank?
+      Rails.logger.warn "error obtaining team name for check [#{self.id}] for pushing metrics"
+      # try to obtain tag from scan
+      if scan.nil? || scan.tag.blank?
+        Rails.logger.warn "error obtaining team name name for check [#{self.id}] for pushing metrics from scan"
+      else
+        team_label = scan.tag.split(':').last.downcase
+      end
+    else
+      team_label = self[:tag].split(':').last.downcase
+    end
+    begin
+      checktype_label = self.checktype.name.downcase
+    rescue
+      Rails.logger.warn "error obtaining checktype name for check [#{self.id}] for pushing metrics"
+    end
+    begin
+      check_status = self.status.downcase
+    rescue
+      Rails.logger.warn "error obtaining status name for check [#{self.id}] for pushing metrics"
+    end
+
+    metric_tags = ["scan:#{team_label}-#{scan_label}", "checktype:#{checktype_label}", "checkstatus:#{check_status}"]
+    Metrics.count("scan.check.count", 1, metric_tags)
+  end
+
   def verify_state_machine
     if status
       db_check = Check.find(id)

@@ -20,9 +20,18 @@ class SNSService
         message = object.to_json(methods: :checktype_name)
       end
     end
-
-    status = object.status.to_s || "UNKNOWN"
-    checktype_name = object.checktype_name.to_s || "UNKNOWN"
+    status = "UNKNOWN"
+    begin
+      status = object.status.to_s
+    rescue
+      Rails.logger.warn "SNSService: Can't get status for #{object}"
+    end
+    checktype_name = "UNKNOWN"
+    begin
+      checktype_name = object.checktype_name.to_s
+    rescue
+      Rails.logger.warn "SNSService: Can't get checktype name for #{object}"
+    end
     # Right now we are only publishing to SNS Check changes.
     # If we plan to publish different object than Checks we should
     # should create a switch case and provide custom message_attributes

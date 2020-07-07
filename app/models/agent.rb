@@ -2,6 +2,11 @@ class Agent < ApplicationRecord
   include Filterable
   include AASM
 
+  # In case the transaction is rolled back, we might had push an incorrect metric.
+  # Proper hook to push the metric would be after_commit, but then is harder to
+  # detect if status has changed. This is the best compromise in effort and consistency.
+  after_save :push_agent_metrics, if: -> { Rails.application.config.metrics && (status_changed? || new_record?) }
+
   has_many :checks
   belongs_to :jobqueue
   validates :jobqueue_id, :version, :presence => true
@@ -67,5 +72,23 @@ class Agent < ApplicationRecord
     event :shutdown do
       transitions :from => [:NEW, :REGISTERING, :REGISTERED, :RUNNING, :DISCONNECTED, :PURGING], :to => :DOWN
     end
+  end
+
+  private
+  def push_agent_metrics
+    begin
+      agent_status = self.status.downcase
+    rescue
+      agent_status = "unknown"
+      Rails.logger.warn "error obtaining status name for agent [#{self.id}] for pushing metrics"
+    end
+    begin
+      agent_jobqueue = self.jobqueue.name.downcase
+    rescue
+      agent_jobqueue = "unknown"
+      Rails.logger.warn "error obtaining jobqueue name for agent [#{self.id}] for pushing metrics"
+    end
+    metric_tags = ["agentstatus:#{agent_status}","jobqueue:#{agent_jobqueue}"]
+    Metrics.count("agent.count", 1, metric_tags)
   end
 end
