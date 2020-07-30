@@ -1,23 +1,34 @@
 require 'uuid'
 class ScansHelper
+  def self.get_metadata(scan)
+    metadata = {
+      "team" => "unknown-team",
+      "program" => "unknown-program"
+    }
+    if scan.nil?
+      Rails.logger.warn "error obtaining scan metadata for nil scan"
+      return metadata
+    end
+    if scan[:program].blank?
+      Rails.logger.warn "error obtaining program metadata for scan [#{scan.id}]"
+    else
+      metadata["program"] = scan[:program].downcase
+    end
+    if scan[:tag].blank?
+      Rails.logger.warn "error obtaining team metadata for scan [#{scan.id}]"
+    else
+      metadata["team"] = scan[:tag].split(':').last.downcase
+    end
+    return metadata
+  end
+
   def self.push_metric(scan,scanstatus="running")
     unless Rails.application.config.metrics
       return
     end
-    scan_label = "unknown-program"
-    team_label = "unknown-team"
-    if scan[:program].blank?
-      Rails.logger.warn "error obtaining program name for scan [#{scan.id}] for pushing metrics"
-    else
-      scan_label = scan[:program].downcase
-    end
-    if scan[:tag].blank?
-      Rails.logger.warn "error obtaining team name for scan [#{scan.id}] for pushing metrics"
-    else
-      team_label = scan[:tag].split(':').last.downcase
-    end
-
-    metric_tags = ["scan:#{team_label}-#{scan_label}","scanstatus:#{scanstatus}"]
+    metadata = self.get_metadata(scan)
+    program_team = "#{metadata[:team]}-#{metadata[:program]}"
+    metric_tags = ["scan:#{program_team}","scanstatus:#{scanstatus}"]
     Metrics.count("scan.count", 1, metric_tags)
   end
 
